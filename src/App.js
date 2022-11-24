@@ -1,60 +1,11 @@
 import {useEffect, useState} from 'react';
 import { getUsers } from './api';
 import './App.css';
+import Form from './components/Form';
 import Wilder from './components/Wilder';
 
-const wilders = [
-    {
-        "id": 1,
-        "name": "Timber",
-        "skills": [
-            {
-                "id": 1,
-                "name": "PHP"
-            },
-            {
-                "id": 5,
-                "name": "Swift"
-            }
-        ]
-    },
-    {
-        "id": 2,
-        "name": "Dave looper",
-        "skills": []
-    },
-    {
-        "id": 3,
-        "name": "Jean Michel",
-        "skills": []
-    },
-    {
-        "id": 4,
-        "name": "Dave looper",
-        "skills": []
-    },
-    {
-        "id": 6,
-        "name": "Micheal",
-        "skills": [
-            {
-                "id": 1,
-                "name": "PHP"
-            },
-            {
-                "id": 3,
-                "name": "BloubiBoulga"
-            },
-            {
-                "id": 5,
-                "name": "Swift"
-            }
-        ]
-    },
-];
-
 function App() {
-  const [users, setUsers] = useState();
+  const [users, setUsers] = useState([]);
 
   const fetchUsers = async () => {
       const data = await getUsers();
@@ -78,13 +29,14 @@ function App() {
           </div>
         </header>
       <main className="container">
+        <Form />
         <h2>Wilders</h2>
         <section className="card-row">
-          {users.map((wilder) => {
+          {users && users.map((wilder) => {
             return (
               <Wilder name={wilder.name} skills={wilder.skills} key={wilder.id}/>
             )
-          } )}
+          })}
         </section>
       </main>
     </div>

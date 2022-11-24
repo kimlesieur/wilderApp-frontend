@@ -1,10 +1,20 @@
 import axios from 'axios';
 
 export const getUsers = async () => {
-    const response = await axios({
+    const {data} = await axios({
         method: 'GET',
         url: 'http://localhost:4001/wilders/',
     });
-    return response.data;
+    return data;
 };
 
+export const createUser = async (name) => {
+    const {data} = await axios(({
+        method: 'POST',
+        url: 'http://localhost:4001/wilders',
+        data: {
+            name: `${name}`
+        }
+    }));
+    return data;
+};
