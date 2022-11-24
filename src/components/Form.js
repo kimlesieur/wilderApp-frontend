@@ -14,24 +14,39 @@ const Form = ({onWilderCreated}) => {
         setWilderName(e.target.value);
     };
 
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault();
+    //     await createUser(wilderName)
+    //     .then((data) => {
+    //         setWilderName("");
+    //         setFeedback(true);
+    //         onWilderCreated(data);
+    //         setProcessing(true);
+    //     })
+    //     .then(() => setProcessing(false))
+    //     .catch(err => {
+    //         setError(true);
+    //     })  
+    // };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        await createUser(wilderName)
-        .then((data) => {
-            setWilderName("");
-            setFeedback(true);
+        try {
+            const data = await createUser(wilderName);
+            setProcessing(true);
             onWilderCreated(data);
-        })
-        .catch(err => {
+            setFeedback(true);
+        } catch(err) {
             setError(true);
-        })
-        
+        } finally {
+            setProcessing(false);
+        }
     };
 
     return (
         <div>
             <p>Créer un nouveau Wilder :</p>
-            <form className="new-member-form" onSubmit={e => handleSubmit(e)}>
+            <form className="form" onSubmit={e => handleSubmit(e)}>
                 <label htmlFor="name" className=""/>
                 <span className=''>Nom : </span>
                 <input 
@@ -41,9 +56,8 @@ const Form = ({onWilderCreated}) => {
                     onChange={handleChange} 
                     value={wilderName}
                     required
-                    disabled={processing}
                 />
-                <button type="submit">+</button>
+                <button type="submit" disabled={processing}>+</button>
             </form>
             {feedback && <div>Wilder créé !</div>}
             {error && <div>Erreur serveur</div>}
