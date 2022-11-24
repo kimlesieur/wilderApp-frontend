@@ -9,7 +9,8 @@ function App() {
   const [parent, enableAnimations] = useAutoAnimate();
   const [users, setUsers] = useState([]);
   const [newWilder, setNewWilder] = useState({});
-  const [error, setError] = useState(false)
+  const [deletedWilder, setDeletedWilder] = useState(false);
+  const [error, setError] = useState(false);
 
   const fetchUsers = async () => {
       await getUsers()
@@ -23,13 +24,16 @@ function App() {
 
   useEffect(() => {
       fetchUsers();
-  }, [newWilder]);
+  }, [newWilder, deletedWilder]);
 
-  //function to update list when new wilder is created
+  //functions to update list when new wilder is created/deleted
   const addWilderToState = (newWilder) => {
     setNewWilder(newWilder);
   };
 
+  const removeWilder = (res) => {
+      setDeletedWilder(!deletedWilder);
+  };
 
   if(!users) {
     return <div>Loading...</div>
@@ -49,7 +53,7 @@ function App() {
           {error && <div>Erreur réseau</div>}
           {users && users.map((wilder) => {
             return (
-              <Wilder name={wilder.name} skills={wilder.skills} key={wilder.id}/>
+              <Wilder name={wilder.name} skills={wilder.skills} key={wilder.id} id={wilder.id} onWilderDelete={removeWilder}/>
             )
           })}
         </section>
